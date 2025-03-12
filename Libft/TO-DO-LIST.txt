@@ -1,0 +1,52 @@
+string.h
+• isalpha x
+• isdigit x
+• isalnum x
+• isascii x
+• isprint x
+• strlen x
+• memset x
+• bzero x
+• memcpy x
+• memmove x
+• strlcpy x
+• strlcat
+• toupper x
+• tolower x
+• strchr x
+• strrchr x
+• strncmp
+• memchr
+• memcmp
+• strnstr
+• atoi
+
+use malloc:
+• calloc
+• strdup
+
+additional functions:
+• substr
+• strjoin
+• strtrim
+• split
+• itoa 
+• strmapi
+• striteri
+• putchar_fd
+• putstr_fd
+• putendl_fd
+• putnbr_fd
+
+
+Bonus: s_list
+• node containing data and next node, NULL if last node
+• lstnew
+• lstadd_front
+• lstsize
+• lstlast
+• lstadd_back
+• lst_delone
+• lstclear
+• lstiter
+• lstmap 

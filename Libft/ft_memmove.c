@@ -6,13 +6,11 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:34:42 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/10 21:13:10 by stliu            ###   ########.fr       */
+/*   Updated: 2025/03/11 17:05:00 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <string.h>
-#include <assert.h>
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
@@ -20,8 +18,8 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	unsigned char		*dest;
 	unsigned const char	*source;
 
-	dest = dst;
-	source = src;
+	dest = (unsigned char *)dst;
+	source = (unsigned const char *)src;
 	if (dest < source)
 	{
 		i = 0;
