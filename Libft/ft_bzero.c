@@ -6,11 +6,11 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:37:21 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/10 17:16:26 by stliu            ###   ########.fr       */
+/*   Updated: 2025/03/14 17:55:41 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "libft.h"
 
 void	ft_bzero(void *ptr, size_t num)
 {

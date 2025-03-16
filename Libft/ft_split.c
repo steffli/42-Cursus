@@ -6,22 +6,27 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:05:10 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/13 17:50:38 by stliu            ###   ########.fr       */
+/*   Updated: 2025/03/16 19:04:04 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_delims(const char *s, char delim)
+static int	count_word(const char *s, char c)
 {
 	int	count;
 
 	count = 0;
 	while (*s)
 	{
-		if (*s == delim)
+		if (*s == c && *s != '\0')
+			s++;
+		else
+		{
+			while (*s != c && *s != '\0')
+				s++;
 			count++;
-		s++;
+		}
 	}
 	return (count);
 }
@@ -32,7 +37,9 @@ static char	*get_word(const char *s, int str_start, int str_len)
 	int		j;
 
 	j = 0;
-	str = (char *)malloc((str_len + 1) * sizeof(char));
+	if (s == NULL)
+		return (NULL);
+	str = malloc((str_len + 1) * sizeof(char));
 	if (str == NULL)
 		return (NULL);
 	while (j < str_len)
@@ -44,6 +51,20 @@ static char	*get_word(const char *s, int str_start, int str_len)
 	return (str);
 }
 
+// char	**get_matrix(char *s, int str_start, int str_end)
+// {
+// 	if (!arr[arr_index])
+// 	{
+// 		while (arr_index > 0)
+// 		{
+// 			free(arr[arr_index]);
+// 			arr_index--;
+// 		}
+// 		free(arr);
+// 	}
+// 	return (NULL);
+// }
+
 char	**ft_split(char const *s, char c)
 {
 	int		i;
@@ -54,18 +75,17 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	arr_index = 0;
-	arr = (char **)malloc((count_delims(s, c) + 2) * sizeof(char *));
+	arr = (char **)malloc((count_word(s, c) + 1) * sizeof(char *));
+	if (arr == NULL)
+		return (NULL);
 	while (s[i] != '\0')
 	{
 		while (s[i] == c)
 			i++;
-		str_start = i;
+		str_start = i--;
 		str_len = 0;
-		while (s[i] != c && s[i] != '\0')
-		{
-			i++;
+		while (s[++i] != c && s[i] != '\0')
 			str_len++;
-		}
 		if (str_len)
 			arr[arr_index++] = get_word(s, str_start, str_len);
 	}

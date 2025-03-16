@@ -15,18 +15,16 @@
 
 #include "libft.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	*ft_calloc(size_t count, size_t size)
 {
 	void	*ptr;
 	size_t	i;
 
 	i = 0;
-	if (nmemb == 0 || size == 0)
-		return (NULL);
-	ptr = malloc(nmemb * size);
+	ptr = malloc(count * size);
 	if (ptr == NULL)
 		return (NULL);
-	while (i < nmemb * size)
+	while (i < count * size)
 	{
 		((char *)ptr)[i] = '\0';
 		i++;
