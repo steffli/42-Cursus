@@ -3,26 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stliu <stliu@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 08:09:51 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/17 08:09:51 by stliu            ###   ########.fr       */
+/*   Updated: 2025/03/17 14:42:21 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list *ft_lstnew(void *content)
+t_list	*ft_lstnew(void *content)
 {
-	t_list *head;
+	t_list	*head;
 
-	if (content == NULL)
-		return (NULL);
 	head = malloc(sizeof(t_list));
 	if (head == NULL)
 		return (NULL);
-	head -> content = content;
-	head -> next = NULL;
+	head->content = content;
+	head->next = NULL;
 	return (head);
 }
 
@@ -34,7 +32,7 @@ t_list *ft_lstnew(void *content)
 //     // Check if the node is created successfully
 //     if (new_node == NULL) {
 //         printf("Test failed: Node creation failed!\n");
-//         return 1;  // Exit if node creation failed
+//         return (1);  // Exit if node creation failed
 //     }
 
 //     // Check if the content is set correctly
@@ -54,5 +52,5 @@ t_list *ft_lstnew(void *content)
 //     // Free the allocated memory
 //     free(new_node);
 
-//     return 0;
+//     return (0);
 // }

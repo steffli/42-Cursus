@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 18:05:10 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/16 19:04:04 by stliu            ###   ########.fr       */
+/*   Updated: 2025/03/17 12:19:39 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,12 @@ static char	*get_word(const char *s, int str_start, int str_len)
 	return (str);
 }
 
-
-static char **free_matrix(char **arr, int arr_index)
+static	char	**free_matrix(char **arr, int arr_index)
 {
 	while (arr_index > 0)
 	{
 		arr_index--;
 		free(arr[arr_index]);
-		
 	}
 	free(arr);
 	return (NULL);
@@ -66,16 +64,16 @@ static char **free_matrix(char **arr, int arr_index)
 
 char	**get_matrix(char **arr, const char *s, char c, int count_word)
 {
-	int 	i;
-	int		str_start;
-	int		str_len;
-	int		arr_index;
+	int	i;
+	int	str_start;
+	int	str_len;
+	int	arr_index;
 
 	i = 0;
 	arr_index = 0;
-	while(s[i] != '\0' && arr_index < count_word)
+	while (s[i] != '\0' && arr_index < count_word)
 	{
-		while(s[i] == c)
+		while (s[i] == c)
 			i++;
 		str_start = i--;
 		str_len = 0;
@@ -84,7 +82,7 @@ char	**get_matrix(char **arr, const char *s, char c, int count_word)
 		if (str_len)
 		{
 			arr[arr_index] = get_word(s, str_start, str_len);
-			if(arr[arr_index] == NULL)
+			if (arr[arr_index] == NULL)
 				return (free_matrix(arr, arr_index));
 			arr_index++;
 		}
@@ -100,7 +98,7 @@ char	**ft_split(char const *s, char c)
 
 	if (s == NULL)
 		return (NULL);
-	count_word = ft_count_word(s,c);
+	count_word = ft_count_word(s, c);
 	arr = (char **)malloc((count_word + 1) * sizeof(char *));
 	if (arr == NULL)
 		return (NULL);

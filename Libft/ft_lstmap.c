@@ -1,21 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 08:30:04 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/17 13:11:14 by stliu            ###   ########.fr       */
+/*   Created: 2025/03/17 14:38:35 by stliu             #+#    #+#             */
+/*   Updated: 2025/03/17 16:27:12 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+/*
+goes through lst and applies f to each not , creates new list resulting of 
+succesive app of f and del function if needed
 
-void	ft_lstadd_front(t_list **lst, t_list *new)
+if new node creation fails 
+*/
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	if (lst == NULL || new == NULL)
+	t_list *new;
+	t_list 
+
+	if (lst == NULL || f == NULL)
 		return ;
-	new->next = *lst;
-	*lst = new;
+	while (lst != NULL)
+		ft_lstiter(lst, f(lst->content));
 }
+
