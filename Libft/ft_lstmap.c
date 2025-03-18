@@ -20,11 +20,23 @@ if new node creation fails
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
 	t_list *new;
-	t_list 
+	t_list *element;
+	t_list *temp;
 
-	if (lst == NULL || f == NULL)
-		return ;
+	if (lst == NULL || f == NULL || del == NULL)
+		return (NULL) ;
 	while (lst != NULL)
-		ft_lstiter(lst, f(lst->content));
+		{
+			ft_lstiter(lst, f(lst->content));
+			element = ft_lstnew(tmp);
+			if (element == NULL)
+			{
+				del(temp);
+				ft_lstclear(&new, del);
+				return (NULL);
+			}
+			ft_lstadd_back(&new, element);
+			lst = lst->next;
+		}
 }
 
