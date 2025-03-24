@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:50:19 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/21 15:58:05 by stliu            ###   ########.fr       */
+/*   Updated: 2025/03/24 16:52:23 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,13 @@ int	check_format(va_list args, const char *format, int *count)
 	else if (*format == 's')
 		ft_putstr(va_arg(args, char *), count);
 	else if (*format == 'c')
-	{
-		ft_putc(va_arg(args, int));
-		(*count)++;
-	}
+		(*count) += ft_putc(va_arg(args, int));
 	else if (*format == 'p')
-	{
-		ft_putstr("0x", count);
-		ft_hex(va_arg(args, unsigned long), count);
-	}
+		ft_ptr(va_arg(args, unsigned long long), count);
 	else if (*format == 'u')
-		ft_putnbr(va_arg(args, unsigned int), count);
+		ft_unsigned(va_arg(args, unsigned long), count);
 	else if (*format == 'x' || *format == 'X')
-		ft_hex(va_arg(args, unsigned int), count);
+		ft_hex(va_arg(args, unsigned long), count, format);
 	else if (*format == '%')
 	{
 		ft_putc('%');
@@ -63,13 +57,15 @@ int	ft_printf(const char *format, ...)
 			format++;
 		}
 	}
+	// if (error == -1)
+	// 	return (-1);
 	va_end(args);
 	return (count);
 }
 
 // int	main(void)
 // {
-// 	int  a = ft_printf("%s", "hallo");
-// 	ft_printf("%d", a);
+// 	//printf("%d", 42);
+// 	//printf("%p", -1);
 // 	return (0);
 // }
