@@ -15,25 +15,23 @@
 
 int	check_format(va_list args, const char *format, int *count)
 {
-	int error;
-
-	error = 0;
 	if (*format == 'd' || *format == 'i')
-		error = ft_putnbr(va_arg(args, int), count);
+		ft_putnbr(va_arg(args, int), count);
 	else if (*format == 's')
-		error = ft_putstr(va_arg(args, char *), count);
+		ft_putstr(va_arg(args, char *), count);
 	else if (*format == 'c')
-		error = ft_putc(va_arg(args, int));
+		(*count) += ft_putc(va_arg(args, int));
 	else if (*format == 'p')
-		error = ft_ptr(va_arg(args, unsigned long long), count);
+		ft_ptr(va_arg(args, unsigned long long), count);
 	else if (*format == 'u')
-		error = ft_unsigned(va_arg(args, unsigned long), count);
+		ft_unsigned(va_arg(args, unsigned long), count);
 	else if (*format == 'x' || *format == 'X')
-		error = ft_hex(va_arg(args, unsigned long), count, format);
+		ft_hex(va_arg(args, unsigned long), count, format);
 	else if (*format == '%')
-		error = ft_putc('%', count);
-	if (error == -1)
-		return (-1);
+	{
+		ft_putc('%');
+		(*count)++;
+	}
 	return (*count);
 }
 
@@ -41,23 +39,26 @@ int	ft_printf(const char *format, ...)
 {
 	va_list	args;
 	int		count;
-	int		error;
 
 	count = 0;
 	va_start(args, format);
 	while (*format)
 	{
 		if (*format == '%')
-			error = check_format(args, ++format, &count);
+		{
+			format++;
+			check_format(args, format, &count);
+			format++;
+		}
 		else
-			error = ft_putc(*format, &count);
-		format++;
+		{
+			ft_putc(*format);
+			count++;
+			format++;
+		}
 	}
-	if (error == -1)
-	{	
-		va_end(args);
-		return (-1);
-	}
+	// if (error == -1)
+	// 	return (-1);
 	va_end(args);
 	return (count);
 }
