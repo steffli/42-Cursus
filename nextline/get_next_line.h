@@ -2,16 +2,19 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 3
-#endif
+#  define BUFFER_SIZE
+# endif
 
+# include <fcntl.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <fcntl.h>
 # include <unistd.h>
-# include <stddef.h>
 
-char	*get_next_line(int fd);
-void	*ft_calloc(size_t count, size_t size);
+char		*get_next_line(int fd);
+void		*ft_calloc(size_t count, size_t size);
+void		print_line(char *buffer);
+// char		*read_files(int fd);
+void		ft_putstr(char *s);
 
 #endif
