@@ -5,83 +5,59 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/26 11:47:07 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/31 20:16:18 by stliu            ###   ########.fr       */
+/*   Created: 2025/04/01 10:12:03 by stliu             #+#    #+#             */
+/*   Updated: 2025/04/01 18:09:41 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	print_line(char *buffer)
-{
-	int	i;
 
-	i = 0;
-	while (buffer[i] && buffer[i] != '\0')
-	{
-		if (buffer[i] == '\n')
-			buffer[i] = '\\';
-		ft_putstr(buffer);
-		i++;
-	}
-}
-
-static char	*read_files(int fd)
+ char	*read_file(int fd)
 {
-	int			bytes_read;
+	int			bytes;
 	char		*buffer;
 	static int	count;
 
 	count = 1;
-	// if (fd < 0 || BUFFERSIZE <= 0 || read(fd,  &next_line, 0) < 0)
-	// 	return (NULL);
-	buffer = ft_calloc(3 + 1, sizeof(char));
-	if (!buffer)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	bytes_read = read(fd, buffer, 1);
-	print_line(buffer);
-	if (bytes_read <= 0)
-	{
-		free(buffer);
+	buffer = malloc(BUFFER_SIZE + 1 * sizeof(char));
+	if (buffer == NULL)
 		return (NULL);
-	}
+	bytes = read(fd, buffer, BUFFER_SIZE);
+	if (bytes <= 0)
+		return (free(buffer), NULL);
 	return (buffer);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*line_buffer;
+	char	*buffer;
 
-	line_buffer = read_files(fd);
-	return (line_buffer);
+	buffer = read_file(fd);
+	return (buffer);
 }
 
-#include <fcntl.h>
-#include <stdio.h>
+int	main(void)
+{
+	int 	fd;
+	char 	*next_line;
+	int 	count;
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*next_line;
-// 	static int		count;
+	count = 0;
+	fd = open("example.txt", O_RDONLY);
+	while (1)
+	{
+		next_line = get_next_line(fd);
+		if (next_line == NULL)
+			break ;
+		count++;
+		printf("[%d]:%s\n", count, next_line);
+		free(next_line);
+		next_line = NULL;
+	}
 
-// 	count = 0;
-// 	fd = open("example.txt", O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 	  printf("Error opening file");
-// 	 return (1);
-// 	} 
-// 	while (1)
-// 	{
-// 		next_line = get_next_line(fd);
-// 		if (next_line == NULL)
-// 			break ;
-// 		count++;
-// 		printf("[%d]:%s\n", count, next_line);
-// 		free(next_line);
-// 		next_line = NULL;
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
+	close(fd);
+	return (0);
+}
