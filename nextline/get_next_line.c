@@ -11,53 +11,90 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+static char	*free_join(char *s1, char *s2)
+{
+	char	*joined;
+	
+	if (s1 == NULL || s2 == NULL)
+		return (free(s1), NULL);
+	joined = ft_strjoin(s1, s2);
+	free(s1);
+	return (joined);
+}
 
+static char *fill_line(char **buffer)
+{
+	char	*line;
+	char	*pos;
+	char	*left_bytes;
+	size_t	len;
 
- char	*read_file(int fd)
+	if (!buffer || !*buffer)
+		return (NULL);
+	pos = ft_strchr(*buffer, '\n');
+	if (pos)
+	{
+		len = pos - *buffer + 1;
+		line = ft_substr(*buffer, 0, len);
+		left_bytes = ft_strdup(pos + 1);
+		free(*buffer);
+		*buffer = left_bytes;
+		return (line);
+	}
+	else if (*buffer && **buffer)
+	{
+		line = ft_strdup(*buffer);
+		free(*buffer);
+		*buffer = NULL;
+		return (line);
+	}
+	free(*buffer);
+	*buffer = NULL;
+	return (NULL);
+}
+
+static char	*read_line(int fd, char *buffer)
 {
 	int			bytes;
-	char		*buffer;
-	static int	count;
+	char		*temp;
+	char 		*new;
 
-	count = 1;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	bytes = 1;
+	temp = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (temp == NULL)
 		return (NULL);
-	buffer = malloc(BUFFER_SIZE + 1 * sizeof(char));
-	if (buffer == NULL)
-		return (NULL);
-	bytes = read(fd, buffer, BUFFER_SIZE);
-	if (bytes <= 0)
-		return (free(buffer), NULL);
+	while (bytes > 0 && !ft_strchr(buffer, '\n'))
+	{
+		bytes = read(fd, temp, BUFFER_SIZE);
+		if (bytes <= 0)
+			{
+				free(temp);
+				if (bytes == 0)
+					return (buffer);
+				else
+					return (NULL);
+			}
+		temp[bytes] = '\0';
+		new = free_join(buffer, temp);
+		if (!new)
+			return (free(temp), NULL);
+		buffer = new;
+	}
+	free(temp);
 	return (buffer);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*buffer;
+	static char	*buffer;
+	char		*line;
 
-	buffer = read_file(fd);
-	return (buffer);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	buffer = read_line(fd, buffer);
+	if (buffer == NULL)
+		return (NULL);
+	line = fill_line(&buffer);
+	return (line);
 }
 
-int	main(void)
-{
-	int 	fd;
-	char 	*next_line;
-	int 	count;
-
-	count = 0;
-	fd = open("example.txt", O_RDONLY);
-	while (1)
-	{
-		next_line = get_next_line(fd);
-		if (next_line == NULL)
-			break ;
-		count++;
-		printf("[%d]:%s\n", count, next_line);
-		free(next_line);
-		next_line = NULL;
-	}
-
-	close(fd);
-	return (0);
-}
