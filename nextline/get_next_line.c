@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 10:12:03 by stliu             #+#    #+#             */
-/*   Updated: 2025/04/01 18:09:41 by stliu            ###   ########.fr       */
+/*   Created: 2025/03/26 11:47:07 by stliu             #+#    #+#             */
+/*   Updated: 2025/04/03 12:21:00 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,79 +22,76 @@ static char	*free_join(char *s1, char *s2)
 	return (joined);
 }
 
-static char *fill_line(char **buffer)
+void	print_line(char *buffer)
 {
-	char	*line;
-	char	*pos;
-	char	*left_bytes;
-	size_t	len;
+	int	i;
 
-	if (!buffer || !*buffer)
+	i = 0;
+	while (buffer[i] && buffer[i] != '\0')
+	{
+		if (buffer[i] == '\n')
+			buffer[i] = '\\';
+		ft_putstr(buffer);
+		i++;
+	}
+}
+
+static char	*read_files(int fd)
+{
+	int			bytes_read;
+	char		*buffer;
+	static int	count;
+
+	count = 1;
+	// if (fd < 0 || BUFFERSIZE <= 0 || read(fd,  &next_line, 0) < 0)
+	// 	return (NULL);
+	buffer = ft_calloc(3 + 1, sizeof(char));
+	if (!buffer)
 		return (NULL);
-	pos = ft_strchr(*buffer, '\n');
-	if (pos)
+	bytes_read = read(fd, buffer, 1);
+	print_line(buffer);
+	if (bytes_read <= 0)
 	{
-		len = pos - *buffer + 1;
-		line = ft_substr(*buffer, 0, len);
-		left_bytes = ft_strdup(pos + 1);
-		free(*buffer);
-		*buffer = left_bytes;
-		return (line);
+		free(buffer);
+		return (NULL);
 	}
-	else if (*buffer && **buffer)
-	{
-		line = ft_strdup(*buffer);
-		free(*buffer);
-		*buffer = NULL;
-		return (line);
-	}
-	free(*buffer);
-	*buffer = NULL;
-	return (NULL);
+	return (buffer);
 }
 
 static char	*read_line(int fd, char *buffer)
 {
-	int			bytes;
-	char		*temp;
-	char 		*new;
+	char	*line_buffer;
 
-	bytes = 1;
-	temp = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (temp == NULL)
-		return (NULL);
-	while (bytes > 0 && !ft_strchr(buffer, '\n'))
-	{
-		bytes = read(fd, temp, BUFFER_SIZE);
-		if (bytes <= 0)
-			{
-				free(temp);
-				if (bytes == 0)
-					return (buffer);
-				else
-					return (NULL);
-			}
-		temp[bytes] = '\0';
-		new = free_join(buffer, temp);
-		if (!new)
-			return (free(temp), NULL);
-		buffer = new;
-	}
-	free(temp);
-	return (buffer);
+	line_buffer = read_files(fd);
+	return (line_buffer);
 }
 
-char	*get_next_line(int fd)
-{
-	static char	*buffer;
-	char		*line;
+#include <fcntl.h>
+#include <stdio.h>
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	buffer = read_line(fd, buffer);
-	if (buffer == NULL)
-		return (NULL);
-	line = fill_line(&buffer);
-	return (line);
-}
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*next_line;
+// 	static int		count;
 
+// 	count = 0;
+// 	fd = open("example.txt", O_RDONLY);
+// 	if (fd == -1)
+// 	{
+// 	  printf("Error opening file");
+// 	 return (1);
+// 	} 
+// 	while (1)
+// 	{
+// 		next_line = get_next_line(fd);
+// 		if (next_line == NULL)
+// 			break ;
+// 		count++;
+// 		printf("[%d]:%s\n", count, next_line);
+// 		free(next_line);
+// 		next_line = NULL;
+// 	}
+// 	close(fd);
+// 	return (0);
+// }
