@@ -6,17 +6,28 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:47:07 by stliu             #+#    #+#             */
-/*   Updated: 2025/04/03 16:08:18 by stliu            ###   ########.fr       */
+/*   Updated: 2025/04/03 18:12:36 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-//function for fill line needed
-// static char *fill_line(char *buffer)
-// {
+char	*get_line(char *buffer)
+{
+	int		idx;
+	char	*line;
 
-// }
+	idx = 0;
+	while (buffer[idx] && buffer[idx] != '\n')
+		idx++;
+	if (buffer[idx] == '\n')
+		idx++;
+	line = malloc((idx + 1) * sizeof(char));
+	if (line == NULL)
+		return (NULL);
+	ft_strlcpy(line, buffer, idx + 1);
+	return (line);
+}
 
 static char	*read_chunks(int fd)
 {
