@@ -6,92 +6,84 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:47:07 by stliu             #+#    #+#             */
-/*   Updated: 2025/04/03 12:21:00 by stliu            ###   ########.fr       */
+/*   Updated: 2025/04/03 16:08:18 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-static char	*free_join(char *s1, char *s2)
+
+//function for fill line needed
+// static char *fill_line(char *buffer)
+// {
+
+// }
+
+static char	*read_chunks(int fd)
 {
-	char	*joined;
-	
-	if (s1 == NULL || s2 == NULL)
-		return (free(s1), NULL);
-	joined = ft_strjoin(s1, s2);
-	free(s1);
-	return (joined);
-}
+	int				bytes_read;
+	static char		buffer[BUFFER_SIZE + 1];
+	static int		count;
+	char			*line;
 
-void	print_line(char *buffer)
-{
-	int	i;
-
-	i = 0;
-	while (buffer[i] && buffer[i] != '\0')
-	{
-		if (buffer[i] == '\n')
-			buffer[i] = '\\';
-		ft_putstr(buffer);
-		i++;
-	}
-}
-
-static char	*read_files(int fd)
-{
-	int			bytes_read;
-	char		*buffer;
-	static int	count;
-
-	count = 1;
-	// if (fd < 0 || BUFFERSIZE <= 0 || read(fd,  &next_line, 0) < 0)
-	// 	return (NULL);
-	buffer = ft_calloc(3 + 1, sizeof(char));
+	line = "";
+	buffer = malloc(BUFFER_SIZE + 1 * sizeof(char));
 	if (!buffer)
 		return (NULL);
-	bytes_read = read(fd, buffer, 1);
-	print_line(buffer);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read <= 0)
+		return (free(buffer), NULL);
+	buffer[bytes_read] = '\0';
+	while (*buffer != '\0')
 	{
-		free(buffer);
-		return (NULL);
+		if (*buffer == '\n')
+			line = ft_substr(buffer, count, BUFFER_SIZE);
+		else
+			line = ft_strjoin(line, buffer);
+		count++;
 	}
-	return (buffer);
+	return (line);
 }
 
-static char	*read_line(int fd, char *buffer)
+char	*get_next_line(int fd)
 {
 	char	*line_buffer;
 
-	line_buffer = read_files(fd);
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
+	line_buffer = read_chunks(fd);
+	if (line_buffer == NULL)
+		return (NULL);
+	printf("%s", line_buffer);
+	free(line_buffer);
 	return (line_buffer);
 }
 
 #include <fcntl.h>
 #include <stdio.h>
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*next_line;
-// 	static int		count;
+int	main(void)
+{
+	int		fd;
+	char	*next_line;
+	static int		count;
 
-// 	count = 0;
-// 	fd = open("example.txt", O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 	  printf("Error opening file");
-// 	 return (1);
-// 	} 
-// 	while (1)
-// 	{
-// 		next_line = get_next_line(fd);
-// 		if (next_line == NULL)
-// 			break ;
-// 		count++;
-// 		printf("[%d]:%s\n", count, next_line);
-// 		free(next_line);
-// 		next_line = NULL;
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
+	count = 0;
+	fd = open("example.txt", O_RDONLY);
+	if (fd == -1)
+	{
+	  printf("Error opening file");
+	 return (1);
+	} 
+	while (1)
+	{
+		next_line = get_next_line(fd);
+		if (next_line == NULL)
+			break ;
+		count++;
+		//printf("[%d]:%s\n", count, next_line);
+		//free(next_line);
+		next_line = NULL;
+	}
+	close(fd);
+	return (0);
+}
