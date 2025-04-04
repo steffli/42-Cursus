@@ -18,6 +18,8 @@ char	*get_line(char *buffer)
 	char	*line;
 
 	idx = 0;
+	if (buffer == NULL)
+		return (NULL);
 	while (buffer[idx] && buffer[idx] != '\n')
 		idx++;
 	if (buffer[idx] == '\n')
@@ -29,44 +31,53 @@ char	*get_line(char *buffer)
 	return (line);
 }
 
-static char	*read_chunks(int fd)
+static char	*read_chunks(int fd, char *cache)
 {
 	int				bytes_read;
-	static char		buffer[BUFFER_SIZE + 1];
-	static int		count;
-	char			*line;
+	char			*buffer;
 
-	line = "";
-	buffer = malloc(BUFFER_SIZE + 1 * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	if (bytes_read <= 0)
-		return (free(buffer), NULL);
-	buffer[bytes_read] = '\0';
-	while (*buffer != '\0')
+	while (!ft_strchr(cache, '\n'))
 	{
-		if (*buffer == '\n')
-			line = ft_substr(buffer, count, BUFFER_SIZE);
-		else
-			line = ft_strjoin(line, buffer);
-		count++;
+		buffer = malloc(BUFFER_SIZE + 1);
+		if (buffer == NULL)
+			return (NULL);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read <= 0)
+			return (free(buffer), cache);
+		buffer[bytes_read] = '\0';
+		cache = ft_strjoin(cache, buffer);
+		free(buffer);
 	}
-	return (line);
+	return (cache);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*line_buffer;
+	static char	*cache;
+	char		*line;
+	char		*new_cache;
+	int 		i;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	line_buffer = read_chunks(fd);
-	if (line_buffer == NULL)
+	cache = read_chunks(fd, cache);
+	if (cache == NULL)
 		return (NULL);
-	printf("%s", line_buffer);
-	free(line_buffer);
-	return (line_buffer);
+	line = get_line(cache);
+	if (line == NULL)
+		return (free(cache), cache = NULL, NULL);
+	i = ft_strlen(line);
+	if (cache[i] == NULL)
+		return (free(cache), cache = NULL, line);
+	else
+	{
+		new_cache = ft_strdup(cache + i);
+		free(cache);
+		cache = new_cache;
+		if (cache == NULL)
+			return (free(line), NULL);
+	}
+	return (line);
 }
 
 #include <fcntl.h>

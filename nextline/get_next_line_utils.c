@@ -102,7 +102,7 @@ char	*ft_strdup(const char *s)
 	return (ptr);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+char	*ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
 
@@ -118,4 +118,16 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	while (src[i])
 		i++;
 	return (i);
+}
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (NULL);
 }
