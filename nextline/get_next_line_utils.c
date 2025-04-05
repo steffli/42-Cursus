@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:03:57 by stliu             #+#    #+#             */
-/*   Updated: 2025/04/05 22:06:26 by stliu            ###   ########.fr       */
+/*   Updated: 2025/04/05 22:24:19 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*ft_strdup(const char *s)
 	return (ptr);
 }
 
-char	*ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
 
