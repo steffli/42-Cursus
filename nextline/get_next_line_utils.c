@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:03:57 by stliu             #+#    #+#             */
-/*   Updated: 2025/04/05 22:24:19 by stliu            ###   ########.fr       */
+/*   Updated: 2025/04/06 15:42:18 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,33 +54,28 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (ptr);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*join_free(char *s1, char *s2)
 {
-	char	*ptr;
-	size_t	s1_len;
-	size_t	s2_len;
+	char	*str;
 	size_t	i;
 	size_t	j;
 
-	i = 0;
-	j = 0;
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	ptr = malloc((s1_len + s2_len + 1) * sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		ptr[i] = s1[i];
-		i++;
-	}
-	while (s2[j] != '\0')
-	{
-		ptr[i + j] = s2[j];
-		j++;
-	}
-	ptr[i + j] = '\0';
-	return (ptr);
+	if (!s1)
+		s1 = ft_strdup("");
+	if (!s1 || !s2)
+		return (free(s1), NULL);
+	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!str)
+		return (free(s1), NULL);
+	i = -1;
+	while (s1[++i])
+		str[i] = s1[i];
+	j = -1;
+	while (s2[++j])
+		str[i + j] = s2[j];
+	str[i + j] = '\0';
+	free(s1);
+	return (str);
 }
 
 char	*ft_strdup(const char *s)
@@ -102,23 +97,6 @@ char	*ft_strdup(const char *s)
 	return (ptr);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-
-	if (dstsize == 0)
-		return (ft_strlen(src));
-	i = 0;
-	while (i < dstsize - 1 && src[i] != '\0')
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	while (src[i])
-		i++;
-	return (i);
-}
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s)
