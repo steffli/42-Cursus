@@ -6,31 +6,13 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:26:40 by stliu             #+#    #+#             */
-/*   Updated: 2025/05/04 16:30:05 by stliu            ###   ########.fr       */
+/*   Updated: 2025/05/05 16:23:22 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf/ft_printf.h"
 #include "minitalk.h"
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	size_t				i;
-	unsigned char		*dest;
-	unsigned const char	*source;
-
-	i = 0;
-	dest = (unsigned char *)dst;
-	source = (unsigned const char *)src;
-	if (!dest && !source)
-		return (NULL);
-	while (i < n)
-	{
-		dest[i] = source[i];
-		i++;
-	}
-	return (dst);
-}
+#include "libft/libft.h"
 
 void	*ft_realloc(void *ptr, int size, int new_size)
 {
@@ -84,8 +66,6 @@ void	handle_signal(int signal)
 	static int	bit_pos;
 	static int	buffer_len;
 
-	if (buffer == NULL)
-		buffer = NULL;
 	if (bit_pos == 0)
 		c = 0;
 	if (signal == SIGUSR1)

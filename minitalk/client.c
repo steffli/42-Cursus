@@ -6,12 +6,20 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:17:59 by stliu             #+#    #+#             */
-/*   Updated: 2025/05/04 13:31:53 by stliu            ###   ########.fr       */
+/*   Updated: 2025/05/05 16:39:23 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf/ft_printf.h"
 #include "minitalk.h"
+
+sig_atomic_t received_signal = 0;
+
+void ackknowledge_sig(int signal)
+{
+	void(signal);
+	received_signal = 1;
+}
 
 static int	ft_atoi(char *str)
 {
@@ -47,6 +55,7 @@ void	shift_bits(int server_pid, char *s)
 		bit = 0;
 		while (bit < 8)
 		{
+			received_signal = 0;
 			if ((*s >> (7 - bit)) & 1)
 				kill(server_pid, SIGUSR1);
 			else
