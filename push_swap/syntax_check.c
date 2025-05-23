@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 12:50:53 by stliu             #+#    #+#             */
-/*   Updated: 2025/05/14 15:00:38 by stliu            ###   ########.fr       */
+/*   Updated: 2025/05/23 15:31:50 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //check if input is a number
 int	wrong_syntax(char *str)
 {
-	if (!*str || *str == '\0')
+	if (!str || *str == '\0')
 		return (1);
 	if (*str == '+' || *str == '-')
 		str++;
@@ -32,19 +32,14 @@ int	wrong_syntax(char *str)
 
 //free node and free stack
 
-int	found_dupes(t_element *a, int nbr)
+int	found_dupes(t_element *stack, int nbr)
 {
-	t_element	*current;
-
-	current = a;
-	while (current->next)
+	while (stack)
 	{
-		if (current->value == nbr)
+		if (stack->value == nbr)
 			return (1);
-		current = current->next;
+		stack = stack->next;
 	}
-	if (current->value == nbr)
-		return (1);
 	return (0);
 }
 
@@ -69,10 +64,10 @@ void	free_exit(t_element **a, char **argv, int is_split)
 {
 	int	i;
 
-	i = 0;
 	free_stack(a);
 	if (argv && is_split)
 	{
+		i = 0;
 		while (argv[i])
 			free(argv[i++]);
 		free(argv);
