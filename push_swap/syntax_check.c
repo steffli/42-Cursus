@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 12:50:53 by stliu             #+#    #+#             */
-/*   Updated: 2025/05/23 15:31:50 by stliu            ###   ########.fr       */
+/*   Updated: 2025/05/25 15:53:14 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ int	wrong_syntax(char *str)
 	if (!str || *str == '\0')
 		return (1);
 	if (*str == '+' || *str == '-')
+	{
 		str++;
+		if (*str == '+' || *str == '-')
+			return (1);
+	}
 	if (!*str)
 		return (1);
 	while (*str)
@@ -29,8 +33,6 @@ int	wrong_syntax(char *str)
 	}
 	return (0);
 }
-
-//free node and free stack
 
 int	found_dupes(t_element *stack, int nbr)
 {
@@ -60,30 +62,15 @@ void	free_stack(t_element **a)
 	*a = NULL;
 }
 
-void	free_exit(t_element **a, char **argv, int is_split)
+void	free_split(char **split_str, int is_alloced)
 {
 	int	i;
 
-	free_stack(a);
-	if (argv && is_split)
+	if (is_alloced && split_str)
 	{
 		i = 0;
-		while (argv[i])
-			free(argv[i++]);
-		free(argv);
+		while (split_str[i])
+			free(split_str[i++]);
+		free(split_str);
 	}
-	ft_printf("Error\n");
-	exit(1);
-}
-
-void	free_split(char **split_str)
-{
-	int	i;
-
-	if (!split_str)
-		return ;
-	i = 0;
-	while (split_str[i])
-		free(split_str[i++]);
-	free(split_str);
 }

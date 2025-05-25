@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:14:06 by stliu             #+#    #+#             */
-/*   Updated: 2025/05/14 18:50:48 by stliu            ###   ########.fr       */
+/*   Updated: 2025/05/25 15:33:57 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void				rrr(t_element **a, t_element **b);
 
 int					wrong_syntax(char *str);
 void				free_stack(t_element **a);
-void				free_exit(t_element **a, char **argv, int is_split);
 int					found_dupes(t_element *a, int nbr);
 long				ft_atol(char *str);
-int					create_stack(t_element **a, char **argv);
+int					create_stack(t_element **a, int argc, char **argv);
+void				free_split(char **split_str, int is_split);
 
 #endif

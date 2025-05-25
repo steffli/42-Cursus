@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:36:56 by stliu             #+#    #+#             */
-/*   Updated: 2025/05/23 15:57:09 by stliu            ###   ########.fr       */
+/*   Updated: 2025/05/25 15:57:04 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,32 @@ int	add_node(t_element **stack, int nbr)
 	return (1);
 }
 
-int	create_stack(t_element **a, char **argv)
+int	create_stack(t_element **a, int argc, char **argv)
 {
-	int	nbr;
-	int	i;
+	char	**split_str;
+	long	num;
+	int		i;
+	int		is_alloc;
 
-	i = 0;
-	while (argv[i])
+	i = -1;
+	is_alloc = 0;
+	if (argc == 2)
 	{
-		if (wrong_syntax(argv[i]))
-			return (0);
-		nbr = ft_atol(argv[i]);
-		if (nbr < INT_MIN || nbr > INT_MAX)
-			return (0);
-		if (found_dupes(*a, (int)nbr))
-			return (0);
-		if (!add_node(a, (int)nbr))
-			return (0);
-		i++;
+		split_str = ft_split(argv[1], ' ');
+		is_alloc = 1;
 	}
+	else
+		split_str = argv + 1;
+	while (split_str[++i])
+	{
+		if (wrong_syntax(split_str[i]))
+			return (free_split(split_str, is_alloc), 0);
+		num = ft_atol(split_str[i]);
+		if (num < INT_MIN || num > INT_MAX || found_dupes(*a, (int)num))
+			return (free_split(split_str, is_alloc), 0);
+		if (!add_node(a, (int)num))
+			return (free_split(split_str, is_alloc), 0);
+	}
+	free_split(split_str, is_alloc);
 	return (1);
 }
