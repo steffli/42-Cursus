@@ -43,5 +43,9 @@ int					found_dupes(t_element *a, int nbr);
 long				ft_atol(char *str);
 int					create_stack(t_element **a, int argc, char **argv);
 void				free_split(char **split_str, int is_split);
+int					is_sorted(t_element *stack);
+void				radix_sort(t_element **a, t_element **b);
+int					list_len(t_element *stack);
+void				small_sort(t_element **a, t_element **b, int len);
 
 #endif

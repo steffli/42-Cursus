@@ -19,7 +19,8 @@ PRINTF = $(PRINTF_DIR)/libftprintf.a
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-PUSH_SWAP_SRCS = push_swap_utils.c rotate_utils.c rotate_util_left.c stack_utils.c syntax_check.c main.c
+PUSH_SWAP_SRCS = push_swap_utils.c rotate_utils.c rotate_util_left.c stack_utils.c syntax_check.c main.c small_sort.c \
+				sort.c
 
 PUSH_SWAP_OBJS = $(PUSH_SWAP_SRCS:.c=.o)
 

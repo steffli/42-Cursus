@@ -59,10 +59,18 @@ int	main(int argc, char **argv)
 
 	a = NULL;
 	b = NULL;
+	(void)b;
 	if (argc < 2 || (argc == 2 && argv[1][0] == '\0'))
 		return (1);
 	if (!create_stack(&a, argc, argv))
 		return (free_stack(&a), ft_printf("Error\n"), 1);
+	if (!is_sorted(a))
+	{
+		if (list_len(a) <= 5)
+			small_sort(&a, &b, list_len(a));
+		else
+			radix_sort(&a, &b);
+	}
 	print_stack(a, "A");
 	free_stack(&a);
 	return (0);
