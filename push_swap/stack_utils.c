@@ -52,12 +52,12 @@ t_element	*get_last_element(t_element *stack)
 	return (last_element);
 }
 
-int	add_node(t_element **stack, int nbr)
+int	add_node(t_element **stack, int num)
 {
 	t_element	*element;
 	t_element	*last;
 
-	element = new_element(nbr);
+	element = new_element(num);
 	if (!element)
 		return (0);
 	if (!*stack)
@@ -90,6 +90,8 @@ int	create_stack(t_element **a, int argc, char **argv)
 	{
 		if (wrong_syntax(split_str[i]))
 			return (free_split(split_str, is_alloc), 0);
+		// if (ft_strlen(split_str[i]) > 10)
+		// 	return (free_split(split_str, is_alloc), 0);
 		num = ft_atol(split_str[i]);
 		if (num < INT_MIN || num > INT_MAX || found_dupes(*a, (int)num))
 			return (free_split(split_str, is_alloc), 0);

@@ -57,7 +57,7 @@ static void	apply_offset(t_element **stack, int offset)
 	tmp = *stack;
 	while (tmp)
 	{
-		tmp->value += offset;
+		tmp->value = tmp->value + offset;
 		tmp = tmp->next;
 	}
 }
