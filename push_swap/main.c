@@ -35,23 +35,6 @@ long	ft_atol(char *str)
 	return (sign * result);
 }
 
-//#include <stdio.h>
-
-void	print_stack(t_element *stack, const char *stack_name)
-{
-	ft_printf("Stack %s:\n", stack_name);
-	if (!stack)
-	{
-		ft_printf("  (empty)\n");
-		return ;
-	}
-	while (stack)
-	{
-		ft_printf("  %d\n", stack->value);
-		stack = stack->next;
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_element	*a;
@@ -60,9 +43,12 @@ int	main(int argc, char **argv)
 	a = NULL;
 	b = NULL;
 	if (argc < 2 || (argc == 2 && argv[1][0] == '\0'))
+	{
+		write(2, "Error\n", 6);
 		return (1);
+	}
 	if (!create_stack(&a, argc, argv))
-		return (free_stack(&a), ft_printf("Error\n"), 1);
+		return (free_stack(&a), write(2, "Error\n", 6));
 	if (!is_sorted(a))
 	{
 		if (list_len(a) <= 5)
@@ -70,7 +56,6 @@ int	main(int argc, char **argv)
 		else
 			radix_sort(&a, &b);
 	}
-	//print_stack(a, "A");
 	free_stack(&a);
 	free_stack(&b);
 	return (0);

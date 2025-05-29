@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   small_sort.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: stliu <stliu@student.42heilbronn.de>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: stliu <stliu@student.42heilbronn.de>       +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2025/05/26 12:24:56 by stliu             #+#    #+#             */
 /*   Updated: 2025/05/26 12:24:56 by stliu            ###   ########.fr       */
 /*                                                                            */
@@ -13,51 +16,92 @@
 
 static int	find_min(t_element *stack)
 {
-	int	min;
+	int			min;
+	int			min_pos;
+	int			current_pos;
+	t_element	*current;
 
 	min = stack->value;
-	while (stack)
+	min_pos = 0;
+	current_pos = 0;
+	current = stack;
+	while (current)
 	{
-		if (stack->value < min)
-			min = stack->value;
-		stack = stack->next;
+		if (current->value < min)
+		{
+			min = current->value;
+			min_pos = current_pos;
+		}
+		current = current->next;
+		current_pos++;
 	}
-	return (min);
+	return (min_pos);
 }
 
-static void	sort_three(t_element **a)
+static void	min_top(t_element **a)
 {
-	int	top;
-	int	mid;
-	int	bot;
+	int	min_pos;
+	int	size;
 
-	top = (*a)->value;
-	mid = (*a)->next->value;
-	bot = (*a)->next->next->value;
-	if (top > mid && mid < bot && top < bot)
+	min_pos = find_min(*a);
+	size = list_len(*a);
+	if (min_pos <= size / 2)
+	{
+		while (min_pos-- > 0)
+			ra(a);
+	}
+	else
+	{
+		min_pos = size - min_pos;
+		while (min_pos-- > 0)
+			rra(a);
+	}
+}
+
+static void	tripple_sort(t_element **a)
+{
+	int	one;
+	int	two;
+	int	three;
+
+	one = (*a)->value;
+	two = (*a)->next->value;
+	three = (*a)->next->next->value;
+	if (one > two && two > three)
+	{
 		sa(a);
-	else if (top > mid && mid > bot && top > bot)
-		(sa(a), rra(a));
-	else if (top > mid && mid < bot && top > bot)
+		rra(a);
+	}
+	else if (one < two && two > three && one < three)
+	{
+		rra(a);
+		sa(a);
+	}
+	else if (one > two && two < three && one > three)
 		ra(a);
-	else if (top < mid && mid > bot && top < bot)
-		(sa(a), ra(a));
-	else if (top < mid && mid > bot && top > bot)
+	else if (one > two && two < three && one < three)
+		sa(a);
+	else if (one < two && two > three && one > three)
 		rra(a);
 }
 
-static void	sort_five(t_element **a, t_element **b)
+static void	quadro_k(t_element **a, t_element **b)
 {
-	while (list_len(*a) > 3)
-	{
-		if ((*a)->value == find_min(*a))
-			pb(a, b);
-		else
-			ra(a);
-	}
-	sort_three(a);
-	while (*b)
-		pa(a, b);
+	min_top(a);
+	pb(a, b);
+	tripple_sort(a);
+	pa(a, b);
+}
+
+static void	fiverr(t_element **a, t_element **b)
+{
+	min_top(a);
+	pb(a, b);
+	min_top(a);
+	pb(a, b);
+	tripple_sort(a);
+	pa(a, b);
+	pa(a, b);
 }
 
 void	small_sort(t_element **a, t_element **b, int len)
@@ -65,7 +109,9 @@ void	small_sort(t_element **a, t_element **b, int len)
 	if (len == 2 && !is_sorted(*a))
 		sa(a);
 	else if (len == 3)
-		sort_three(a);
-	else if (len <= 5)
-		sort_five(a, b);
+		tripple_sort(a);
+	else if (len == 4)
+		quadro_k(a, b);
+	else if (len == 5)
+		fiverr(a, b);
 }
