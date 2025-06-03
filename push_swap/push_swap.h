@@ -23,8 +23,6 @@ typedef struct s_node
 	int				value;
 	int				index;
 	struct s_node	*next;
-	struct s_node	*previous;
-
 }					t_element;
 // Push_swap operations
 void				sa(t_element **a);

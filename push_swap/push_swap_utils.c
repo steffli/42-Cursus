@@ -22,13 +22,9 @@ void	sa(t_element **a)
 	first = *a;
 	second = first->next;
 	first->next = second->next;
-	if (second->next)
-		second->next->previous = first;
-	second->previous = NULL;
 	second->next = first;
-	first->previous = second;
 	*a = second;
-	ft_printf("sa\n");
+	write(1, "sa\n", 3);
 }
 
 void	sb(t_element **b)
@@ -41,13 +37,9 @@ void	sb(t_element **b)
 	first = *b;
 	second = first->next;
 	first->next = second->next;
-	if (second->next)
-		second->next->previous = first;
-	second->previous = NULL;
 	second->next = first;
-	first->previous = second;
 	*b = second;
-	ft_printf("sb\n");
+	write(1, "sb\n", 3);
 }
 
 void	pa(t_element **a, t_element **b)
@@ -58,13 +50,9 @@ void	pa(t_element **a, t_element **b)
 		return ;
 	temp_b = *b;
 	*b = temp_b->next;
-	if (*b)
-		(*b)->previous = NULL;
 	temp_b->next = *a;
-	if (*a)
-		(*a)->previous = temp_b;
 	*a = temp_b;
-	ft_printf("pa\n");
+	write(1, "pa\n", 3);
 }
 
 void	pb(t_element **a, t_element **b)
@@ -75,13 +63,9 @@ void	pb(t_element **a, t_element **b)
 		return ;
 	temp_a = *a;
 	*a = temp_a->next;
-	if (*a)
-		(*a)->previous = NULL;
 	temp_a->next = *b;
-	if (*b)
-		(*b)->previous = temp_a;
 	*b = temp_a;
-	ft_printf("pb\n");
+	write(1, "pb\n", 3);
 }
 
 void	ss(t_element **a, t_element **b)

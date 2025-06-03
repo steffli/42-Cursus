@@ -48,7 +48,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	if (!create_stack(&a, argc, argv))
-		return (free_stack(&a), write(2, "Error\n", 6));
+		return (free_stack(&a), write(2, "Error\n", 6), 1);
 	if (!is_sorted(a))
 	{
 		if (list_len(a) <= 5)

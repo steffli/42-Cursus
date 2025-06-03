@@ -29,65 +29,54 @@ int	is_sorted(t_element *stack)
 	return (1);
 }
 
-static int	get_max_bits(t_element **stack)
+static int get_max_bits(t_element *stack)
 {
-	t_element	*tmp;
-	int			max;
-	int			min;
-	int			max_bits;
+	int size;
+	int max_bits;
 
-	tmp = *stack;
-	max = tmp->value;
-	min = tmp->value;
-	while (tmp)
-	{
-		if (tmp->value > max)
-			max = tmp->value;
-		if (tmp->value < min)
-			min = tmp->value;
-		tmp = tmp->next;
-	}
-	max -= min;
+	size = list_len(stack);
 	max_bits = 0;
-	while ((max >> max_bits) != 0)
+	while ((size - 1) >> max_bits)
 		max_bits++;
 	return (max_bits);
 }
 
-static void	assign_indexes(t_element *stack)
+static void assign_indexes(t_element *a)
 {
-	t_element	*ptr;
-	t_element	*current;
-	int			value;
-	int			count;
+	t_element *temp;
+	t_element *current;
+	int i;
 
-	ptr = stack;
-	while (ptr)
+	temp = a;
+	while (temp)
 	{
-		current = stack;
-		count = 0;
-		value = ptr->value;
+		current = a;
+		i = 0;
 		while (current)
 		{
-			if (ptr->value > current->value)
-				count++;
+			if (temp->value > current->value)
+				i++;
 			current = current->next;
 		}
-		ptr->index = count;
-		ptr = ptr->next;
+		temp->index = i;
+		temp = temp->next;
 	}
 }
 
-void	radix_sort(t_element **a, t_element **b)
+void radix_sort(t_element **a, t_element **b)
 {
-	int	i;
-	int	j;
-	int	size;
+	int max_bits;
+	int size;
+	int i;
+	int j;
 
 	assign_indexes(*a);
-	i = -1;
+	max_bits = get_max_bits(*a);
 	size = list_len(*a);
-	while (++i < get_max_bits(a))
+	while ((size - 1) >> max_bits)
+		max_bits++;
+	i = -1;
+	while (++i < max_bits)
 	{
 		j = -1;
 		while (++j < size)

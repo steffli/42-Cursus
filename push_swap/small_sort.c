@@ -72,17 +72,17 @@ static void	tripple_sort(t_element **a)
 		sa(a);
 		rra(a);
 	}
-	else if (one < two && two > three && one < three)
-	{
-		rra(a);
-		sa(a);
-	}
 	else if (one > two && two < three && one > three)
 		ra(a);
 	else if (one > two && two < three && one < three)
 		sa(a);
 	else if (one < two && two > three && one > three)
 		rra(a);
+	else if (one < two && two > three && one < three)
+	{
+		sa(a);
+		ra(a);
+	}
 }
 
 static void	quadro_k(t_element **a, t_element **b)

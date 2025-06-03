@@ -26,11 +26,9 @@ void	rra(t_element **a)
 		last = last->next;
 	}
 	second_last->next = NULL;
-	last->previous = NULL;
 	last->next = *a;
-	(*a)->previous = last;
 	*a = last;
-	ft_printf("rra\n");
+	write(1, "rra\n", 4);
 }
 
 void	rrb(t_element **b)
@@ -47,11 +45,9 @@ void	rrb(t_element **b)
 		last = last->next;
 	}
 	second_last->next = NULL;
-	last->previous = NULL;
 	last->next = *b;
-	(*b)->previous = last;
 	*b = last;
-	ft_printf("rrb\n");
+	write(1, "rrb\n", 4);
 }
 
 void	ra(t_element **a)
@@ -66,11 +62,9 @@ void	ra(t_element **a)
 	while (last->next)
 		last = last->next;
 	*a = first ->next;
-	(*a)->previous = NULL;
 	last->next = first;
-	first->previous = last;
 	first->next = NULL;
-	ft_printf("ra\n");
+	write(1, "ra\n", 3);
 }
 
 void	rb(t_element **b)
@@ -85,11 +79,9 @@ void	rb(t_element **b)
 	while (last->next)
 		last = last->next;
 	*b = first ->next;
-	(*b)->previous = NULL;
 	last->next = first;
-	first->previous = last;
 	first->next = NULL;
-	ft_printf("rb\n");
+	write(1, "rb\n", 3);
 }
 
 void	rr(t_element **a, t_element **b)

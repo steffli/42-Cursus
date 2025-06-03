@@ -21,7 +21,6 @@ t_element	*new_element(int value)
 		return (NULL);
 	node->value = value;
 	node->next = NULL;
-	node->previous = NULL;
 	return (node);
 }
 
@@ -66,38 +65,34 @@ int	add_node(t_element **stack, int num)
 	while (last->next)
 		last = last->next;
 	last->next = element;
-	last->previous = last;
 	return (1);
 }
 
-int	create_stack(t_element **a, int argc, char **argv)
+int create_stack(t_element **a, int argc, char **argv)
 {
-	char	**split_str;
-	long	num;
-	int		i;
-	int		is_alloc;
+    char    **split_str;
+    long    num;
+    int     i;
+    int     j;
 
-	i = -1;
-	is_alloc = 0;
-	if (argc == 2)
-	{
-		split_str = ft_split(argv[1], ' ');
-		is_alloc = 1;
-	}
-	else
-		split_str = argv + 1;
-	while (split_str[++i])
-	{
-		if (wrong_syntax(split_str[i]))
-			return (free_split(split_str, is_alloc), 0);
-		if (ft_strlen(split_str[i]) > 10)
-			return (free_split(split_str, is_alloc), 0);
-		num = ft_atol(split_str[i]);
-		if (num < INT_MIN || num > INT_MAX || found_dupes(*a, (int)num))
-			return (free_split(split_str, is_alloc), 0);
-		if (!add_node(a, (int)num))
-			return (free_split(split_str, is_alloc), 0);
-	}
-	free_split(split_str, is_alloc);
-	return (1);
+    i = 0;
+    while (++i < argc)
+    {
+        split_str = ft_split(argv[i], ' ');
+        if (!split_str)
+            return (free_stack(a), 0);
+        j = -1;
+        while (split_str[++j])
+        {
+            if (wrong_syntax(split_str[j]) || !ft_strlen(split_str[j]))
+                return (free_stack(a), free_split(split_str, 1), 0);
+            num = ft_atol(split_str[j]);
+            if (num < INT_MIN || num > INT_MAX || found_dupes(*a, (int)num))
+                return (free_stack(a), free_split(split_str, 1), 0);
+            if (!add_node(a, (int)num))
+                return (free_stack(a), free_split(split_str, 1), 0);
+        }
+        free_split(split_str, 1);
+    }
+    return (1);
 }
