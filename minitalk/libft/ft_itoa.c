@@ -6,7 +6,7 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 17:50:56 by stliu             #+#    #+#             */
-/*   Updated: 2025/03/19 18:56:25 by stliu            ###   ########.fr       */
+/*   Updated: 2025/05/08 15:35:43 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,9 @@ char	*ft_itoa(int n)
 {
 	char		*num;
 	long int	c;
-	int			i;
 	int			number_len;
 
 	c = (long int)n;
-	i = 0;
 	number_len = ft_number_len(n);
 	num = ft_calloc(number_len + 1, sizeof(char));
 	if (num == NULL)
@@ -72,7 +70,6 @@ char	*ft_itoa(int n)
 	{
 		c = -c;
 		num[0] = '-';
-		i = 1;
 	}
 	number_len--;
 	while (c >= 10)

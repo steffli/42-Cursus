@@ -6,61 +6,56 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:17:59 by stliu             #+#    #+#             */
-/*   Updated: 2025/05/05 16:39:23 by stliu            ###   ########.fr       */
+/*   Updated: 2025/06/06 13:09:00 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf/ft_printf.h"
+#include "libft/libft.h"
 #include "minitalk.h"
 
-sig_atomic_t received_signal = 0;
+volatile sig_atomic_t	g_received_signal = 0;
 
-void ackknowledge_sig(int signal)
+static void	ackknowledge_sig(int sig)
 {
-	void(signal);
-	received_signal = 1;
+	(void)sig;
+	g_received_signal = 1;
 }
 
-static int	ft_atoi(char *str)
+static void	send_signal(int server_pid, int val)
 {
-	int	i;
-	int	result;
-	int	sign;
-
-	i = 0;
-	result = 0;
-	sign = 1;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	g_received_signal = 0;
+	if (val)
 	{
-		if (str[i] == '-')
-			sign = -sign;
-		i++;
+		if (kill(server_pid, SIGUSR1) == -1)
+		{
+			ft_printf("Error: Failed to send Signal");
+			exit(1);
+		}
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	else
 	{
-		result = result * 10 + (str[i] - 48);
-		i++;
+		if (kill(server_pid, SIGUSR2) == -1)
+		{
+			ft_printf("Error: Failed to send Signal");
+			exit(1);
+		}
 	}
-	return (result * sign);
+	while (!g_received_signal)
+		usleep(100);
 }
 
-void	shift_bits(int server_pid, char *s)
+static void	shift_bits(int server_pid, char *s)
 {
 	int	bit;
 
+	signal(SIGUSR1, ackknowledge_sig);
 	while (*s)
 	{
 		bit = 0;
 		while (bit < 8)
 		{
-			received_signal = 0;
-			if ((*s >> (7 - bit)) & 1)
-				kill(server_pid, SIGUSR1);
-			else
-				kill(server_pid, SIGUSR2);
-			usleep(100);
+			send_signal(server_pid, (*s >> (7 - bit)) & 1);
 			bit++;
 		}
 		s++;
@@ -68,8 +63,7 @@ void	shift_bits(int server_pid, char *s)
 	bit = 0;
 	while (bit < 8)
 	{
-		kill(server_pid, SIGUSR2);
-		usleep(100);
+		send_signal(server_pid, 0);
 		bit++;
 	}
 }
@@ -78,11 +72,19 @@ int	main(int argc, char **argv)
 {
 	pid_t	server;
 	char	*s;
+	char	*pid_str;
 
 	if (argc != 3)
 	{
 		ft_printf("Error occured: Invalid number of arguments\n");
 		exit(1);
+	}
+	pid_str = argv[1];
+	while (*pid_str)
+	{
+		if (!ft_isdigit(*pid_str))
+			return (ft_printf("Error: Invalid server PID\n"), exit(1), 1);
+		pid_str++;
 	}
 	server = ft_atoi(argv[1]);
 	s = argv[2];

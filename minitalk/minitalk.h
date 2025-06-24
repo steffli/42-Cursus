@@ -6,9 +6,15 @@
 /*   By: stliu <stliu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:48:31 by stliu             #+#    #+#             */
-/*   Updated: 2025/05/04 16:07:14 by stliu            ###   ########.fr       */
+/*   Updated: 2025/06/06 12:53:40 by stliu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <signal.h>
+#ifndef MINITALK_H
+# define MINITALK_H
+
+# include <unistd.h>
+# include <signal.h>
+# include <stdlib.h>
+
+#endif
